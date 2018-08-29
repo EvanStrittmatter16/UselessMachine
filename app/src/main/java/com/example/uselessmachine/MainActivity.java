@@ -4,6 +4,7 @@ import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -25,6 +26,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+        butttonSelfDestruct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSelfDestructSequence();
+            }
+        });
         switchUseless.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -38,6 +45,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void startSelfDestructSequence() {
+        //disable button
+            butttonSelfDestruct.setEnabled(false);
+            //start countdown
+        new CountDownTimer(10000, 1000) {
+            int num =0;
+            @Override
+            public void onTick(long millisUntilFinished) {
+                butttonSelfDestruct.setText("" + (10-num));
+                num++;
+            }
+            // use finsh();
+            @Override
+            public void onFinish() {
+                Toast.makeText(MainActivity.this, "Achievement unlocked: BOOM!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }.start();
     }
 
     private void startSwitchOffTimer() {
